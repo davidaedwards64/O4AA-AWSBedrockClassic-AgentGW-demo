@@ -1,0 +1,113 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Okta Agent Gateway GitHub Tools",
+    "version": "1.1.0",
+    "description": "GitHub tools reached through the Okta Agent Gateway. Each path is the GitHub MCP tool name."
+  },
+  "paths": {
+    "/get_me": {
+      "post": {
+        "summary": "Get Current User",
+        "description": "Get the profile of the currently authenticated GitHub user. Use for 'who am I' questions.",
+        "operationId": "get_me",
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/search_repositories": {
+      "post": {
+        "summary": "Search GitHub repositories",
+        "description": "Search repositories using GitHub search syntax, e.g. 'user:<github-username>' to list a user's repositories, or 'my-repo in:name'.",
+        "operationId": "search_repositories",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": { "type": "string", "description": "GitHub repository search query" },
+                  "sort": { "type": "string", "description": "stars, forks, help-wanted-issues or updated" },
+                  "perPage": { "type": "integer", "description": "Results per page, 1 to 100" }
+                },
+                "required": ["query"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/list_branches": {
+      "post": {
+        "summary": "List branches",
+        "description": "List the branches of a repository.",
+        "operationId": "list_branches",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "owner": { "type": "string", "description": "Repository owner" },
+                  "repo": { "type": "string", "description": "Repository name" }
+                },
+                "required": ["owner", "repo"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/list_commits": {
+      "post": {
+        "summary": "List commits",
+        "description": "List recent commits in a repository.",
+        "operationId": "list_commits",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "owner": { "type": "string", "description": "Repository owner" },
+                  "repo": { "type": "string", "description": "Repository name" },
+                  "perPage": { "type": "integer", "description": "Results per page, 1 to 100" }
+                },
+                "required": ["owner", "repo"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/get_file_contents": {
+      "post": {
+        "summary": "Get file or directory contents",
+        "description": "Read a file, or list a directory, in a repository. Path defaults to the repository root.",
+        "operationId": "get_file_contents",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "owner": { "type": "string", "description": "Repository owner" },
+                  "repo": { "type": "string", "description": "Repository name" },
+                  "path": { "type": "string", "description": "Path to file or directory" }
+                },
+                "required": ["owner", "repo"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Success" } }
+      }
+    }
+  }
+}

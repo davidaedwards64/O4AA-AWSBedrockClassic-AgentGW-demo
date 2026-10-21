@@ -1,0 +1,8 @@
+# Never commit the agent's private key or runtime files
+agent_key.json
+*.pem
+.venv/
+streamlit.log
+streamlit.pid
+__pycache__/
+.DS_Store
