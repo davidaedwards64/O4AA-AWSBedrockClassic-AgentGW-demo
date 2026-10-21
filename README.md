@@ -98,6 +98,21 @@ All environment-specific values have been replaced with placeholders.
 - **Lambda:** set `OKTA_AGENT_GATEWAY_URL` to the Agent Gateway's MCP endpoint, and `TOOL_PREFIX` if the Gateway prefixes tool names (check with an MCP `tools/list` call). Use a timeout of 30 seconds or more, and return errors as normal responses (see the considerations above).
 - **Okta and GitHub:** the AI Agent, custom authorization server, Agent Gateway, MCP Server definition and the GitHub connection (a GitHub App with the permissions you want to expose) are configured in Okta and GitHub. The slide deck summarises the objects and flows.
 
+## Environment Changes
+
+The aim of this demo environment was to show applying O4AA with minimal changes to the existing Bedrock Agents (Classic) and MCP environment. The following figure shows the architecture of the solution with the key changes highlighted.
+
+![Environment changes](docs/environment-changes.png)
+
+There are three sets of changes:
+1. The new O4AA components (see the next section)
+2. Modifications to the frontend application
+3. Modifications to the Lambda function to call the Agent Gateway instead of the MCP Server directly
+
+The frontend application (app.py) is modified to store some information about the Okta environment in environment variables, then perform calls to the /authorize and /token endpoints of the Gateway Custom Authorization Server. The access token and client ID are stored in the sessionAttributes before the call to AWS Bedrock. The sample app.py is included in this repo. You could extend it for better token and error handling.
+
+The Lambda function code may currently be calling an MCP Server directly. It needs to be changed to consume and extract the access token from the sessionAttributes and make the call to the Agent Gateway instead. It also handles the responses from the Agent Gateway The sample lambda_function.py is included in this repo.
+
 ## Okta/O4AA Components
 
 There are multiple components in Okta to be configured as shown in the following figure.
